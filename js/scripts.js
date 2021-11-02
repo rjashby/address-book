@@ -45,7 +45,7 @@ Contact.prototype.fullName = function() {
 
 Contact.prototype.addAddress = function(address) {
   address.id = this.assignId();
-  this.addresses[address.addressId] = address;
+  this.address[address.addressId] = address;
 };
 
 Contact.prototype.assignId = function() {
@@ -54,8 +54,8 @@ Contact.prototype.assignId = function() {
 };
 
 Contact.prototype.findAddress = function(id) {
-  if (this.addresses[id] != undefined) {
-    return this.addresses[id];
+  if (this.address[id] != undefined) {
+    return this.address[id];
   }
   return false;
 };
@@ -83,7 +83,7 @@ function displayContactDetails(addressBookToDisplay) {
 }
 
 function displayAddressDetails(contact) {
-  let addressList = $("ul#addresses");
+  let addressList = $("ul#address");
   let htmlForAddressInfo = "";
   Object.keys(contact.address).forEach(function(key) {
     const address = contact.findAddress(key);
@@ -99,7 +99,7 @@ function showContact(contactId) {
   $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
   $(".email-address").html(contact.emailAddress);
-  // $(".address").html(contact.address);
+  // $("ul#address").html(contact.address);
   displayAddressDetails(contact);
   let buttons = $("#buttons");
   buttons.empty();
@@ -136,8 +136,11 @@ $(document).ready(function() {
     $("input#new-address").val("");
     $("select#address-type option:selected").val("");
 
-    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress, inputtedAddress, inputtedAddressType);
+    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress);
+    let newAddress = new Address(inputtedAddress, inputtedAddressType);
+    console.log(newAddress);
     addressBook.addContact(newContact);
+    newContact.addAddress(newAddress);
     displayContactDetails(addressBook);
   });
 });
